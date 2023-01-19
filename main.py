@@ -90,8 +90,6 @@ def get_hh_information(programming_languages):
       
         vacancies_hh = response_hh_formatted['items']
       
-        vacancies_processed_hh = 0
-      
         salaries_hh.clear()
       
         for vacancy_hh in vacancies_hh :
@@ -101,8 +99,6 @@ def get_hh_information(programming_languages):
             if expected_salary_hh:
             
                 salaries_hh.append(expected_salary_hh)
-      
-                vacancies_processed_hh += 1
               
         if  salaries_hh :
         
@@ -114,7 +110,7 @@ def get_hh_information(programming_languages):
         
         languages_information_hh[programming_language] = { 
               "vacancies_found": sum_vacancies_hh,
-              "vacancies_processed": vacancies_processed_hh,
+              "vacancies_processed": len(salaries_hh),
               "average_salary": average_salary_hh
           }
       
@@ -146,8 +142,6 @@ def get_sj_information(programming_languages, key_sj):
         response_formatted_sj = response.json()
         
         vacancies_sj = response_formatted_sj['objects']
-    
-        vacancies_processed_sj = 0
         
         average_salary_sj = 0
         
@@ -160,8 +154,6 @@ def get_sj_information(programming_languages, key_sj):
             if expected_salary_sj:
               
                  salaries_sj.append(expected_salary_sj)
-    
-                 vacancies_processed_sj+=1
         
         if len(salaries_sj):
         
@@ -174,7 +166,7 @@ def get_sj_information(programming_languages, key_sj):
         languages_information_sj[programming_language] = {
                 "average_salary": average_salary_sj,
                 "vacancies_found": response_formatted_sj['total'],
-                "vacancies_processed": vacancies_processed_sj
+                "vacancies_processed": len(salaries_sj)
         }
     
     return languages_information_sj
