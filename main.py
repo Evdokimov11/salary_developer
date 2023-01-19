@@ -74,8 +74,7 @@ def get_hh_information(programming_languages):
 
     for programming_language in programming_languages :
     
-        params_hh = {
-               'User-Agent' : 'MyApp/1.0 (my-app-feedback@example.com)',  
+        params_hh = {  
                 'text' : f'Программист {programming_language}',
                 'area' : 1,
                 'date_from': date.today() - relativedelta(months=1)
