@@ -25,7 +25,7 @@ def predict_salary(salary_from, salary_to):
     return expected_salary
 
   
-def predict_rub_salary(vacancy):
+def predict_rub_salary_hh(vacancy):
 
     expected_salary = None
 
@@ -96,7 +96,7 @@ def get_hh_information(programming_languages):
       
         for vacancy_hh in vacancies_hh :
       
-            expected_salary_hh = predict_rub_salary(vacancy_hh)
+            expected_salary_hh = predict_rub_salary_hh(vacancy_hh)
       
             if expected_salary_hh:
             
