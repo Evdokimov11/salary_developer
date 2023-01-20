@@ -47,28 +47,28 @@ def predict_rub_salary_sj(vacancy):
     return expected_salary
 
 
-def print_table(languages_information, title):
+def print_table(languages_processed_vacancies, title):
 
     table_data = [['Язык программирования','Вакансий найдено',
                    'Вакансий обработано','Средняя зарплата']]
     
-    for language, language_information in languages_information.items():
+    for language, language_processed_vacancies in languages_processed_vacancies.items():
     
       table_data.append([language,            
-                         language_information['vacancies_found'],
-                         language_information['vacancies_processed'],
-                         language_information['average_salary']
+                         language_processed_vacancies['vacancies_found'],
+                         language_processed_vacancies['vacancies_processed'],
+                         language_processed_vacancies['average_salary']
                         ])
       
     table = AsciiTable(table_data, title)
     print(table.table)
 
 
-def get_hh_information(programming_languages):
+def process_languages_hh(programming_languages):
 
     url = 'https://api.hh.ru/vacancies'
 
-    languages_information = {}
+    languages_processed_vacancies = {}
 
     salaries = []
 
@@ -108,20 +108,20 @@ def get_hh_information(programming_languages):
       
             average_salary = 'Вакансий не найдено'
         
-        languages_information[programming_language] = { 
+        languages_processed_vacancies[programming_language] = { 
               "vacancies_found": sum_vacancies,
               "vacancies_processed": len(salaries),
               "average_salary": average_salary
           }
       
-    return languages_information
+    return languages_processed_vacancies
 
 
-def get_sj_information(programming_languages, api_key):
+def process_languages_sj(programming_languages, api_key):
       
     url = 'https://api.superjob.ru/2.0/vacancies/'
     
-    languages_information = {}
+    languages_processed_vacancies= {}
     
     salaries = []
     
@@ -163,13 +163,13 @@ def get_sj_information(programming_languages, api_key):
     
             average_salary = 'Вакансии не найдены'
         
-        languages_information[programming_language] = {
+        languages_processed_vacancies[programming_language] = {
                 "average_salary": average_salary,
                 "vacancies_found": response_formatted['total'],
                 "vacancies_processed": len(salaries)
         }
     
-    return languages_information
+    return languages_processed_vacancies
 
 
 if __name__ == "__main__":
@@ -180,13 +180,13 @@ if __name__ == "__main__":
 
   programming_languages = ['JavaScript','Java','Python','Ruby','PHP','C++','C#', 'C']
 
-  languages_information_hh = get_hh_information(programming_languages)
+  processed_languages_hh = process_languages_hh(programming_languages)
 
-  languages_information_sj = get_sj_information(programming_languages, api_key_sj)
+  processed_languages_sj = process_languages_sj(programming_languages, api_key_sj)
 
-  print_table(languages_information_hh, 'HeadHunter Moscow')
+  print_table(processed_languages_hh, 'HeadHunter Moscow')
 
-  print_table(languages_information_sj, 'SuperJob Moscow')
+  print_table(processed_languages_sj, 'SuperJob Moscow')
   
 
 
