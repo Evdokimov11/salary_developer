@@ -9,11 +9,11 @@ from dotenv import load_dotenv
 def predict_salary(salary_from, salary_to):
 
     if salary_from and salary_to:
-        expected_salary = (salary_from + salary_to)/2
+        return  (salary_from + salary_to)/2
     if not salary_from:
-        expected_salary = salary_to * 0.8
+        return  salary_to * 0.8
     if not salary_to:    
-        expected_salary = salary_from * 1.2  
+        return  salary_from * 1.2  
         
      
   
@@ -28,7 +28,7 @@ def predict_rub_salary_hh(vacancy):
 def predict_rub_salary_sj(vacancy):
 
     expected_salary = None 
-    if (vacancy['payment_from'] or vacancy['payment_to']) and vacancy['currency'] == 'rub'
+    if (vacancy['payment_from'] or vacancy['payment_to']) and vacancy['currency'] == 'rub':
         expected_salary = predict_salary(vacancy['payment_from'], vacancy['payment_to'])
         
     return expected_salary
