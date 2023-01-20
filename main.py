@@ -12,15 +12,14 @@ def predict_salary(salary_from, salary_to):
     if salary_from and salary_to:
 
         expected_salary = (salary_from + salary_to)/2
-    else:
 
-        if salary_from:
+    if not salary_from:
 
-            expected_salary = salary_from * 1.2  
+        expected_salary = salary_to * 0.8
+    
+    if not salary_to:    
 
-        else:
-
-            expected_salary = salary_to * 0.8
+        expected_salary = salary_from * 1.2  
 
     return expected_salary
 
