@@ -70,50 +70,63 @@ def process_languages_hh(programming_languages):
 
     languages_processed_vacancies = {}
 
-    salaries = []
+    
 
     for programming_language in programming_languages :
-    
-        params = {  
-                'text' : f'Программист {programming_language}',
-                'area' : 1,
-                'date_from': date.today() - relativedelta(months=1)
-        }
-      
-        response = requests.get(url, params=params)
-      
-        response.raise_for_status()
-      
-        response_formatted = response.json()
-      
-        sum_vacancies = response_formatted['found']
-      
-        vacancies = response_formatted['items']
+
+        page = 0
         
+        pages_number = 1
+
+        salaries = []
+
         salaries.clear()
-      
-        for vacancy in vacancies :
-      
-            expected_salary = predict_rub_salary_hh(vacancy)
-      
-            if expected_salary:
+        
+        while page < pages_number:
+    
+            params = {  
+                    'text' : f'Программист {programming_language}',
+                    'area' : 1,
+                    'date_from': date.today() - relativedelta(months=1),
+                    'page': page
+            }
+          
+            response = requests.get(url, params=params)
+          
+            response.raise_for_status()
+          
+            response_formatted = response.json()
+    
+            pages_number = response_formatted['pages']
             
-                salaries.append(expected_salary)
-              
+            page += 1
+          
+            sum_vacancies = response_formatted['found']
+          
+            vacancies = response_formatted['items']
+            
+            for vacancy in vacancies :
+          
+                expected_salary = predict_rub_salary_hh(vacancy)
+          
+                if expected_salary:
+                
+                    salaries.append(expected_salary)
+                  
         if  salaries:
-        
+            
             average_salary = sum(salaries)/len(salaries)
-      
+          
         else:
-      
+          
             average_salary = 'Вакансий не найдено'
-        
+            
         languages_processed_vacancies[programming_language] = { 
               "vacancies_found": sum_vacancies,
               "vacancies_processed": len(salaries),
               "average_salary": average_salary
-          }
-      
+        }
+  
     return languages_processed_vacancies
 
 
@@ -123,52 +136,62 @@ def process_languages_sj(programming_languages, api_key):
     
     languages_processed_vacancies= {}
     
-    salaries = []
-    
     headers = {
        'X-Api-App-Id':api_key, 
       }
     
     for programming_language in programming_languages :
-    
-        params = {
-           'keyword': f'Программист {programming_language}',
-           'catalogues':33, 
-           'town':4
-          }
-          
-        response = requests.get(url, headers=headers, params=params)
-        
-        response_formatted = response.json()
-        
-        vacancies = response_formatted['objects']
-        
-        average_salary = 0
+
+        salaries = []
+
+        page = 0
+        more_results = True
         
         salaries.clear()
-      
-        for vacancy in vacancies:
-    
-            expected_salary = predict_rub_salary_sj(vacancy)
+
+        while more_results :
         
-            if expected_salary:
+            params = {
+               'keyword': f'Программист {programming_language}',
+               'catalogues':33, 
+               'town':4,
+               'page': page
+              }
               
-                 salaries.append(expected_salary)
+            response = requests.get(url, headers=headers, params=params)
+            
+            response_formatted = response.json()
+
+            more_results = response_formatted['more']
+            
+            vacancies = response_formatted['objects']
+            
+            
+            
+            page += 1
+            
+            for vacancy in vacancies:
         
+                expected_salary = predict_rub_salary_sj(vacancy)
+            
+                if expected_salary:
+                  
+                     salaries.append(expected_salary)
+            
         if len(salaries):
-        
+            
             average_salary = sum(salaries) / len(salaries)
-    
-        else:
-    
-            average_salary = 'Вакансии не найдены'
         
+        else:
+        
+            average_salary = 'Вакансии не найдены'
+            
         languages_processed_vacancies[programming_language] = {
                 "average_salary": average_salary,
                 "vacancies_found": response_formatted['total'],
                 "vacancies_processed": len(salaries)
         }
-    
+        
     return languages_processed_vacancies
 
 
