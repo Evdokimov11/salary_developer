@@ -64,7 +64,6 @@ def process_languages_hh(programming_languages):
       page = 0
       pages_number = 1
       hh_salaries = []
-      hh_salaries.clear()
 
       while page < pages_number:
 
@@ -115,7 +114,6 @@ def process_languages_sj(programming_languages, api_key):
       sj_salaries = []
       page = 0
       more_results = True
-      sj_salaries.clear()
   
       while more_results:
   
