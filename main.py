@@ -76,11 +76,11 @@ def process_languages_hh(programming_languages):
             }
           hh_response = requests.get(hh_url, params=hh_params)
           hh_response.raise_for_status()
-          hh_response_formatted = hh_response.json()
-          pages_number = hh_response_formatted['pages']
+          hh_formatted_response = hh_response.json()
+          pages_number = hh_formatted_response['pages']
           page += 1
-          sum_vacancies = hh_response_formatted['found']
-          vacancies = hh_response_formatted['items']
+          sum_vacancies = hh_formatted_response['found']
+          vacancies = hh_formatted_response['items']
 
           for vacancy in vacancies:
 
@@ -126,9 +126,9 @@ def process_languages_sj(programming_languages, api_key):
             'page': page
             }
           sj_response = requests.get(sj_url, headers=sj_headers, params=sj_params)
-          sj_response_formatted = sj_response.json()
-          more_results = sj_response_formatted['more']
-          vacancies = sj_response_formatted['objects']
+          sj_formatted_response = sj_response.json()
+          more_results = sj_formatted_response['more']
+          vacancies = sj_formatted_response['objects']
           page += 1
     
           for vacancy in vacancies:
@@ -144,7 +144,7 @@ def process_languages_sj(programming_languages, api_key):
   
       languages_processed_vacancies[programming_language] = {
         "average_salary": average_salary,
-        "vacancies_found": sj_response_formatted['total'],
+        "vacancies_found": sj_formatted_response['total'],
         "vacancies_processed": len(sj_salaries)
         }
 
@@ -154,11 +154,11 @@ def process_languages_sj(programming_languages, api_key):
 if __name__ == "__main__":
 
   load_dotenv()
-  api_key_sj = os.environ['API_KEY_SJ']
+  sj_api_key = os.environ['SJ_API_KEY']
   programming_languages = [
     'JavaScript', 'Java', 'Python', 'Ruby', 'PHP', 'C++', 'C#', 'C'
     ]
   processed_languages_hh = process_languages_hh(programming_languages)
-  processed_languages_sj = process_languages_sj(programming_languages,api_key_sj)
+  processed_languages_sj = process_languages_sj(programming_languages,sj_api_key)
   print_table(processed_languages_hh, 'HeadHunter Moscow')
   print_table(processed_languages_sj, 'SuperJob Moscow')
