@@ -64,12 +64,13 @@ def process_languages_hh(programming_languages):
       page = 0
       pages_number = 1
       hh_salaries = []
+      moscow_id = 1
 
       while page < pages_number:
 
           hh_params = {
             'text': f'Программист {programming_language}',
-            'area': 1,
+            'area': moscow_id,
             'date_from': date.today() - relativedelta(months=1),
             'page': page
             }
@@ -108,6 +109,8 @@ def process_languages_sj(programming_languages, api_key):
   sj_headers = {
     'X-Api-App-Id': api_key,
     }
+  moscow_id = 4
+  developer_catolog_id = 33
 
   for programming_language in programming_languages:
 
@@ -119,8 +122,8 @@ def process_languages_sj(programming_languages, api_key):
   
           sj_params = {
             'keyword': f'Программист {programming_language}',
-            'catalogues': 33,
-            'town': 4,
+            'catalogues': developer_catolog_id,
+            'town': moscow_id,
             'page': page
             }
           sj_response = requests.get(sj_url, headers=sj_headers, params=sj_params)
